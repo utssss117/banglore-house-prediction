@@ -13,7 +13,7 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    location = request.form.get("location")
+    location = request.form.get("location")-
     sqft = float(request.form.get("sqft"))
     bath = float(request.form.get("bath"))
     bhk = float(request.form.get("bhk"))
@@ -22,13 +22,13 @@ def predict():
                             columns=["location", "total_sqft", "bath", "bhk"])
 
     prediction = pipe.predict(input_df)[0]
-    prediction = max(prediction, 0)   #
+    prediction = max(prediction, 0)   # Avoid negative predictions
 
     result = f"Predicted price for {bhk} BHK in {location} ({sqft} sqft, {bath} bath) is ₹ {round(prediction,2)} Lakhs"
-
 
     locations = sorted(data['location'].unique())
     return render_template('index.html', locations=locations, prediction_text=result)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+     
+    app.run(debug=True, port=5001, use_reloader=False)
